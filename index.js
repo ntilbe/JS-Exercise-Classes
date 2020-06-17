@@ -41,7 +41,25 @@ class Airplane {
 */
 
 class Person {
+  constructor(name, age){
+    this.name = name; 
+    this.age = age; 
+    this.stomach = []; 
+  }
 
+  eat(food){
+    if (this.stomach.length < 10) {
+      this.stomach.push(food); 
+    }
+  }
+
+  poop(){
+    this.stomach = []; 
+  }
+
+  toString(){
+    return `${this.name}, ${this.age}`;
+  }
 }
 
 /*
@@ -59,7 +77,28 @@ class Person {
 */
 
 class Car {
+  constructor(model, milesPerGallon){
+    this.model = model; 
+    this.milesPerGallon = milesPerGallon; 
+    this.tank = 0; 
+    this.odometer = 0; 
+  }
 
+  fill(gallons){
+    this.tank += gallons; 
+  }
+
+  drive(distance){
+    let drivable = this.tank * this.milesPerGallon;
+    if (drivable >= distance) {
+      this.odometer += distance;
+      this.tank -= distance / this.milesPerGallon;
+    } else if (drivable < distance) {
+      this.odometer += drivable;
+      this.tank = 0;
+      return `I ran out of fuel at ${this.odometer} miles`;
+    }
+  }
 }
 
 /*
@@ -74,8 +113,17 @@ class Car {
         + Speaking should return a phrase `Hello my name is {name}, I am from {location}`.
         + {name} and {location} of course come from the instance's own properties.
 */
-class Lambdasian {
 
+class Lambdasian {
+  constructor(attrs){
+    this.name = attrs.name;
+    this.age = attrs.age; 
+    this.location = attrs.location; 
+  }
+
+  speak() {
+    return `Hello my name is ${this.name}, I am from ${this.location}`;
+  }
 }
 
 /*
@@ -92,8 +140,25 @@ class Lambdasian {
         + `demo` receives a `subject` string as an argument and returns the phrase 'Today we are learning about {subject}' where subject is the param passed in.
         + `grade` receives a `student` object and a `subject` string as arguments and returns '{student.name} receives a perfect score on {subject}'
 */
-class Instructor {
 
+class Instructor extends Lambdasian {
+  constructor(attrs) {
+    super(attrs); 
+    this.specialty = attrs.specialty; 
+    this.favLanguage = attrs.favLanguage; 
+    this.catchPhrase = attrs.catchPhrase; 
+  }
+  // {name, age, location, specialty, favLanguage, catchPhrase}
+  demo(subject){
+    this.subject = subject; 
+    return `Today we are learning about ${this.subject}`
+  }
+
+  grade(student, subject){
+    this.student = student;  
+    this.subject = subject; 
+    return`${this.student.name} receives a perfect score on ${this.subject}`
+  }
 }
 
 /*
@@ -111,8 +176,29 @@ class Instructor {
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
-class Student {
 
+class Student extends Lambdasian {
+  constructor(attrs){
+    super(attrs); 
+    this.previousBackground = attrs.previousBackground; 
+    this.className = attrs.className; 
+    this.favSubjects = attrs.favSubjects; 
+  }
+
+  listSubjects(){
+    return `Loving ${this.favSubjects.join(' ')}`
+  }
+
+  PRAssignment(subject){
+    this.subject = subject; 
+    return `${this.name} has submitted a PR for ${this.subject}`
+
+  }
+
+  sprintChallenge(subject){
+    this.subject = subject; 
+    return `${this.name} has begun sprint challenge on ${this.subject}`
+  }
 }
 
 /*
@@ -128,7 +214,23 @@ class Student {
         + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
 */
-class ProjectManager {
+
+class ProjectManager extends Instructor {
+  constructor(atts){
+    super(atts); 
+    this.gradClassName = atts.gradClassName; 
+    this.favInstructor = atts.favInstructor; 
+  }
+
+  standUp(slack){
+    this.slack = slack; 
+    return `${this.name} announces to ${this.slack}. @channel standy times`
+  }
+  
+  debugsCode(student){
+    return `${this.name} debugs ${student.name}'s code on redux` // canno get ${student.subject} to work -- keeps saying undefined
+
+  }
 
 }
 
